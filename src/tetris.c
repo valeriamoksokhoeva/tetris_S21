@@ -21,6 +21,7 @@ void initField() {
 }
 
 void initGame() {
+    game_state.status = START;
     initField();
     
     game_state.info.score = 0;
@@ -49,9 +50,11 @@ void initGame() {
 }
 
 void spawnNewFigure(CurrentFigure *fig){
-    fig->x = WIDTH / 2 + 1;
+    fig->x = WIDTH / 2 - 1;
     fig->y = 0;
-    fig->figure_type = rand() % 7;
+    srand(time(NULL));
+    fig->figure_type = 4;
+    game_state.status = SPAWN;
 }
 
 GameInfo_t updateCurrentState(){
@@ -125,7 +128,8 @@ void moveDown(){
     int linesEmpty = checkDownY();
     if ((game_state.current.y + (3 - linesEmpty) > MAX_Y) || (!tryAttachingOthers())){
         game_state.current.y--;
-    }//AND GO TO ATTACHING
+        game_state.status = ATTACHING;
+    }
 }
 
 int checkDownY(){
@@ -151,23 +155,24 @@ void saveFigureDown(){ //x,y - coordinates of upper left point of matrix 4*4 for
         } 
             
     }
+    game_state.status = SPAWN;
 } //AFTER THAT GO TO SPAWN
 
 
-void lol(){
+void lol() {
     WINDOW *win = startFront();
-    drawPointField(win, game_state.info.field);
-    wgetch(win);
+    initGame();
+    gameLoop(win);
     endwin();
 }
 
 
-void userInput(UserAction_t action, bool hold){
+void userInput(UserAction_t action){
     switch (action)
     {
     case Start:
+        printf("start");
         if (game_state.status == WAITING || game_state.status == GAME_OVER){
-            game_state.status = START
             initGame();
         }
         break;
@@ -175,13 +180,34 @@ void userInput(UserAction_t action, bool hold){
         break;
     case Terminate:
         game_state.status = GAME_OVER;
+        break;
     case Left:
         if (game_state.status == MOVING) moveLeft();
+        break;
     case Right:
         if (game_state.status == MOVING) moveRight();
+        break;
     case Up:
         break;
-    default:
+    case Down:
+        if (game_state.status == MOVING) moveDown();
         break;
+    case Action:
+        if (game_state.status == MOVING) rotateFigure();
+        break;
+    }
+}   
+void gameLoop(WINDOW *win) {
+
+    while (1) {
+        werase(win);  
+        get_inputs();
+        moveDown(); 
+        box(win, 0, 0);
+        drawPointField(win, game_state.info.field);
+        drawFigure(win, game_state.current_fig, game_state.current.x, game_state.current.y);
+        wrefresh(win);  
+
+        usleep(100000);  // (~0.1 сек, можно регулировать)
     }
 }

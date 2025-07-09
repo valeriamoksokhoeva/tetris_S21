@@ -25,7 +25,7 @@ typedef struct GameInfo
     int pause;
 } GameInfo_t;
 
-void userInput(UserAction_t action, bool hold); //ADD HOLD
+void userInput(UserAction_t action); //ADD HOLD
 
 GameInfo_t updateCurrentState();
 

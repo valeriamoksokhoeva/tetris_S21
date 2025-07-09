@@ -6,6 +6,7 @@ WINDOW* startFront(){
     cbreak(); 
     noecho(); 
     keypad(stdscr, TRUE); 
+    nodelay(stdscr, TRUE);
 
     WINDOW *win = newwin(HEIGHT + 2, WIDTH + 2, 0, 0);
     refresh();
@@ -27,7 +28,7 @@ void drawPointField(WINDOW *win, int **field){ //draw empty field ( no figures )
             }
         }
     }
-    wrefresh(win);
+    // wrefresh(win);
 }
 
 void drawFigure(WINDOW *win, int figure[4][4], int x, int y){
@@ -36,31 +37,35 @@ void drawFigure(WINDOW *win, int figure[4][4], int x, int y){
             wmove(win, y + i, x + j);
             if (figure[i][j]){
                 wprintw(win, "*");
-        } 
+            } 
             
+        }
     }
-}}
+    // wrefresh(win);
+}
 
 void get_inputs(){
     int ch = getch();
     while (ch != ERR) { 
         if (ch == '\n'){
-            userInput(Start, false);
+            userInput(Start);
         } else if (ch == KEY_LEFT){
-            userInput(Left, false);
+            userInput(Left);
         } else if (ch == KEY_RIGHT){
-            userInput(Right, false);
+            userInput(Right);
         } else if (ch == KEY_UP){
-            userInput(Up, false);
+            userInput(Up);
         } else if (ch == KEY_DOWN){
-            userInput(Down, false);
+            userInput(Down);
         } else if (ch == ' '){
-            userInput(Action, false);
+            userInput(Action);
         } else if (ch == 'p' || ch == 'P'){
-            userInput(Pause, false);
+            userInput(Pause);
         } else if (ch == 'q' || ch == 'Q'){
-            userInput(Terminate, false);
+            userInput(Terminate);
         }
         ch = getch();
     }
 }
+
+

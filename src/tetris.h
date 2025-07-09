@@ -1,3 +1,10 @@
+/*!
+\file
+\brief Заголовочный файл с описанием классов
+
+Данный файл содержит в себе определения основных 
+классов, используемых в демонстрационной программе
+*/
 #ifndef TETRIS_H_
 #define TETRIS_H_
 
@@ -6,6 +13,8 @@
 #include "frontend.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h> // usleep
+#include <time.h> //srand time
 
 #define WIDTH 10
 #define HEIGHT 20
@@ -38,6 +47,12 @@ typedef struct {
 
 void initGame();
 void initField();
+/**
+ * @brief Rotation of figure
+ * 
+ * Changes coordinates of figure, 
+ * if it doesn't intersect with borders of field.
+ */
 void rotateFigure();
 void copy_matrix(int a[4][4], int b[4][4]);
 int tryAttachingOthers();
@@ -48,7 +63,7 @@ void moveLeft();
 void moveRight();
 void moveDown();
 int checkDownY();
-
+void gameLoop(WINDOW *win);
 
 
 

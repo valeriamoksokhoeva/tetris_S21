@@ -1,0 +1,21 @@
+var NAVTREEINDEX0 =
+{
+"annotated.html":[0,0],
+"brick__game_8h_source.html":[1,0,0,0],
+"classes.html":[0,1],
+"dir_68267d1309a1af8e8297ef4c3efbcdba.html":[1,0,0],
+"figure_8h_source.html":[1,0,0,1],
+"files.html":[1,0],
+"frontend_8h_source.html":[1,0,0,2],
+"globals.html":[1,1,0],
+"globals_func.html":[1,1,1],
+"index.html":[],
+"pages.html":[],
+"struct_current_figure.html":[0,0,0],
+"struct_figure_type_properties.html":[0,0,1],
+"struct_game_info.html":[0,0,2],
+"struct_game_state.html":[0,0,3],
+"tetris_8h.html":[1,0,0,3],
+"tetris_8h.html#a8f4e7cc9f4f34c9cb5a8a71b06fe49c9":[1,0,0,3,1],
+"tetris_8h_source.html":[1,0,0,3]
+};
