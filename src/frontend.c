@@ -68,4 +68,3 @@ void get_inputs(){
     }
 }
 
-

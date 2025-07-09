@@ -11,6 +11,8 @@
 #include "brick_game.h"
 #include "figure.h"
 #include "frontend.h"
+#include "moving.h"
+#include "shifting.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h> // usleep
@@ -29,6 +31,7 @@ typedef enum {
     MOVING,     
     SHIFTING, 
     ATTACHING, 
+    CLEANING_LINES,
     GAME_OVER
 } GameStatus;
 
@@ -42,30 +45,16 @@ typedef struct {
     GameStatus status; 
 } GameState;
 
-
+GameState* getGameState(void);
+void setGameState(GameState newState);
 
 
 void initGame();
 void initField();
-/**
- * @brief Rotation of figure
- * 
- * Changes coordinates of figure, 
- * if it doesn't intersect with borders of field.
- */
-void rotateFigure();
-void copy_matrix(int a[4][4], int b[4][4]);
-int tryAttachingOthers();
 GameState updateGameState();
 void spawnNewFigure(CurrentFigure *fig);
-void saveFigureDown();
-void moveLeft();
-void moveRight();
-void moveDown();
-int checkDownY();
+
 void gameLoop(WINDOW *win);
-
-
 
 void lol();
 #endif

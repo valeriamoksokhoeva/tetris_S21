@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <ncurses.h>
 #include "brick_game.h"
-// #include "tetris.h"
 
 #define WIDTH 10
 #define HEIGHT 20
