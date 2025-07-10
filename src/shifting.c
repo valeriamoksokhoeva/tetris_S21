@@ -8,12 +8,14 @@ void fieldFullLine(){
             if (!gs->info.field[i][j]) full = 0;
         }
         if (full){
-            // for (int j = 1; j <WIDTH+1; j++){
-            //     gs->info.field[i][j] = 0;
-            // }
+            for (int j = 1; j <WIDTH+1; j++){
+                gs->info.field[i][j] = 0;
+            }
             fallDownField(i);
-        }
+        } 
     }
+    // usleep(989);
+    gs->status = SPAWN;
 }
 
 int haveFullLine(){

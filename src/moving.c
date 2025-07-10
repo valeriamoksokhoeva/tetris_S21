@@ -103,9 +103,11 @@ void saveFigureDown() {
             }
         } 
     }
-    if (haveFullLine()) {
-        gs->status = CLEANING_LINES;
-    } else {
-        gs->status = SPAWN;
-    }
+    // fieldFullLine();
+    gs->status = CLEANING_LINES;
+    // if (haveFullLine()) {
+    //     gs->status = CLEANING_LINES;
+    // } else {
+    //     gs->status = SPAWN;
+    // }
 }

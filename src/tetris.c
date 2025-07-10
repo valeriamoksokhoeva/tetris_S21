@@ -110,7 +110,8 @@ void gameLoop(WINDOW *win) {
                     break;
                 case CLEANING_LINES:
                     fieldFullLine();
-                    saveFigureDown();
+                    // saveFigureDown();
+                    break;
                 default:
                     break;
             }
