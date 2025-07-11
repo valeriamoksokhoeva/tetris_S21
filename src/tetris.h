@@ -55,11 +55,9 @@ void spawnNewFigure(CurrentFigure *fig);
 
 void gameLoop(WINDOW *win);
 
-void lol();
-void showNextFigure();
+void play();
 void generateNextFigure();
 void updateFigure();
-
-
+void cleanGameOver();
 
 #endif

@@ -14,6 +14,7 @@ void drawPointField(WINDOW *win, int **field);
 void drawFigure(WINDOW *win, int figure[4][4], int x, int y);
 void get_inputs();
 void showButtons();
-
+void showGame(WINDOW *win, int no_curr, int **field, int figure[4][4], int x, int y, int **next);
+void showNextFigure(int **next);
 
 #endif

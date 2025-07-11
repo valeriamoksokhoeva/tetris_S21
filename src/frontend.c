@@ -94,3 +94,26 @@ void get_inputs(){
     }
 }
 
+void showGame(WINDOW *win, int no_curr, int **field, int figure[4][4], int x, int y, int **next){
+    drawPointField(win, field);
+    if (!no_curr) {
+        drawFigure(win, figure, x, y);
+        no_curr = 0;
+     }
+    showNextFigure(next);
+    wrefresh(win);
+}
+
+void showNextFigure(int **next){
+    WINDOW *win = getWinNextFigure();
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            wmove(win, i+1, j+1);
+            if (next[i][j]){
+                wprintw(win, "*");
+            } 
+            
+        }
+    }
+    wrefresh(win);
+}

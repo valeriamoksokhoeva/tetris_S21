@@ -2,6 +2,6 @@
 
 int main(){
     srand((unsigned char)time(NULL)); // should be called only once
-    lol();
+    play();
     return 0;
 }
