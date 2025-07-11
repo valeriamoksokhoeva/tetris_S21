@@ -2,9 +2,8 @@
 #define SHIFTING_H_
 
 #include "tetris.h"
-
-void fieldFullLine();
+int fieldFullLine();
 void fallDownField(int line);
 int haveFullLine();
-
+int gameOverLines();
 #endif

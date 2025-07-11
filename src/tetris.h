@@ -28,8 +28,7 @@ typedef enum {
     WAITING,   
     START,
     SPAWN,     
-    MOVING,     
-    SHIFTING, 
+    MOVING,    
     ATTACHING, 
     CLEANING_LINES,
     GAME_OVER
@@ -57,4 +56,10 @@ void spawnNewFigure(CurrentFigure *fig);
 void gameLoop(WINDOW *win);
 
 void lol();
+void showNextFigure();
+void generateNextFigure();
+void updateFigure();
+
+
+
 #endif

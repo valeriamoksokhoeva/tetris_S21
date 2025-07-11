@@ -15,6 +15,32 @@ WINDOW* startFront(){
     wrefresh(win);
 
     return win;
+} // DO ENDWIN IN THE END
+
+WINDOW* getWinNextFigure(){
+    WINDOW *next_figure = newwin(5, 14, 12, 15);
+    refresh();
+    box(next_figure, 0, 0);
+    mvwprintw(next_figure, 1, 1, "Next figure:");
+    wrefresh(next_figure);
+    getch();
+    return next_figure;
+}
+void showButtons(){
+    WINDOW *buttons = newwin(10, 21, 0, 15);
+    refresh();
+    box(buttons, 0, 0);
+    mvwprintw(buttons, 1, 1, "Start = ENTER");
+    mvwprintw(buttons, 2, 1, "Pause = 'p'");
+    mvwprintw(buttons, 3, 1, "Terminate = 'q'");
+    mvwprintw(buttons, 4, 1, "Left = left arrow");
+    mvwprintw(buttons, 5, 1, "Right = right arrow");
+    mvwprintw(buttons, 6, 1, "Down = down arrow");
+    mvwprintw(buttons, 7, 1, "Up = up arrow");
+    mvwprintw(buttons, 8, 1, "Action = SPACE");
+
+    wrefresh(buttons);
+    getch();
 }
 
 void drawPointField(WINDOW *win, int **field){ //draw empty field ( no figures )
@@ -48,21 +74,21 @@ void get_inputs(){
     int ch = getch();
     while (ch != ERR) { 
         if (ch == '\n'){
-            userInput(Start);
+            userInput(Start, false);
         } else if (ch == KEY_LEFT){
-            userInput(Left);
+            userInput(Left, false);
         } else if (ch == KEY_RIGHT){
-            userInput(Right);
+            userInput(Right, false);
         } else if (ch == KEY_UP){
-            userInput(Up);
+            userInput(Up, false);
         } else if (ch == KEY_DOWN){
-            userInput(Down);
+            userInput(Down, false);
         } else if (ch == ' '){
-            userInput(Action);
+            userInput(Action, false);
         } else if (ch == 'p' || ch == 'P'){
-            userInput(Pause);
+            userInput(Pause, false);
         } else if (ch == 'q' || ch == 'Q'){
-            userInput(Terminate);
+            userInput(Terminate, false);
         }
         ch = getch();
     }

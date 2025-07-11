@@ -9,8 +9,11 @@
 #define HEIGHT 20
 
 WINDOW* startFront();
+WINDOW* getWinNextFigure();
 void drawPointField(WINDOW *win, int **field);
 void drawFigure(WINDOW *win, int figure[4][4], int x, int y);
 void get_inputs();
+void showButtons();
+
 
 #endif

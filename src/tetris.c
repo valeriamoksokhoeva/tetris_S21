@@ -39,29 +39,14 @@ void initGame() {
     game_state.info.pause = 0;
     game_state.game_over = false;
 
-    // spawnNewFigure(&game_state.current);
-    spawnNewFigure(&game_state.next);
-
-    // const FigureTypeProperties* curr_fig = &figures[game_state.current.figure_type];
-    // for (int y = 0; y < 4; y++) {
-    //     for (int x = 0; x < 4; x++) {
-    //         game_state.current_fig[y][x] = curr_fig->blocks[y][x];
-    //     }
-    // }
-
-    const FigureTypeProperties* next_fig = &figures[game_state.next.figure_type];
-    for (int y = 0; y < 4; y++) {
-        for (int x = 0; x < 4; x++) {
-            game_state.info.next[y][x] = next_fig->blocks[y][x];
-        }
-    }
+    generateNextFigure();
 }
 
 void spawnNewFigure(CurrentFigure *fig){
     fig->x = WIDTH / 2 - 1;
     fig->y = 0;
     fig->figure_type = rand() % 7;
-    game_state.status = SPAWN;
+    // game_state.status = SPAWN;
 }
 
 GameInfo_t updateCurrentState(){
@@ -75,10 +60,14 @@ GameState updateGameState(){
 void gameLoop(WINDOW *win) {
     int frame_count = 0;
     const int frames_per_drop = 10;  
-    while (game_state.status != GAME_OVER) {
+    int no_curr = 0;
+    while (1) {
         werase(win);
         get_inputs();
+
         if (frame_count % frames_per_drop == 0) {
+            no_curr = 0;
+
             switch (game_state.status) {
                 case WAITING:
                     break;
@@ -89,13 +78,8 @@ void gameLoop(WINDOW *win) {
                     break;
                     
                 case SPAWN:
-                    spawnNewFigure(&game_state.current);
-                    const FigureTypeProperties* curr_fig = &figures[game_state.current.figure_type];
-                    for (int y = 0; y < 4; y++) {
-                        for (int x = 0; x < 4; x++) {
-                            game_state.current_fig[y][x] = curr_fig->blocks[y][x];
-                        }
-                    }
+                    updateFigure();
+                    generateNextFigure();
                     game_state.status = MOVING;
                     break;
                     
@@ -104,23 +88,24 @@ void gameLoop(WINDOW *win) {
                     break;
                     
                 case ATTACHING:
-                    // fieldFullLine();
                     saveFigureDown();
-                    // game_state.status = SPAWN;
                     break;
                 case CLEANING_LINES:
-                    fieldFullLine();
-                    // saveFigureDown();
+                    no_curr = fieldFullLine();
                     break;
+                case GAME_OVER:
+                    
                 default:
                     break;
             }
         }
         box(win, 0, 0);
         drawPointField(win, game_state.info.field);
-        if (game_state.status != WAITING) {
+        if (!no_curr) {
             drawFigure(win, game_state.current_fig, game_state.current.x, game_state.current.y);
+            no_curr = 0;
         }
+        showNextFigure();
         wrefresh(win);
         
         usleep(100000); 
@@ -131,10 +116,11 @@ void gameLoop(WINDOW *win) {
     }
 }
 
-void userInput(UserAction_t action) {
+void userInput(UserAction_t action, bool hold) {
+    (void)hold;
     switch (action) {
         case Start:
-            if (game_state.status == WAITING || game_state.status == GAME_OVER) {
+            if (game_state.status == GAME_OVER) {
                 game_state.status = START;
             }
             break;
@@ -160,12 +146,12 @@ void userInput(UserAction_t action) {
             break;
             
         case Up:
-            // Можно использовать для ускоренного падения
-            if (game_state.status == MOVING) {
-                while (game_state.status == MOVING) {
-                    moveDown();
-                }
-            }
+            // // Можно использовать для ускоренного падения
+            // if (game_state.status == MOVING) {
+            //     while (game_state.status == MOVING) {
+            //         moveDown();
+            //     }
+            // }
             break;
             
         case Down:
@@ -180,8 +166,47 @@ void userInput(UserAction_t action) {
 
 void lol() {
     WINDOW *win = startFront();
+    showButtons();
+    // showNextFigure();
     game_state.status = WAITING;  // Начинаем в состоянии ожидания
     initGame();
     gameLoop(win);
+    free(game_state.info.field);
+    free(game_state.info.next);
     endwin();
+}
+
+void showNextFigure(){
+    WINDOW *win = getWinNextFigure();
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            wmove(win, i+1, j+1);
+            if (game_state.info.next[i][j]){
+                wprintw(win, "*");
+            } 
+            
+        }
+    }
+    wrefresh(win);
+}
+
+void generateNextFigure(){
+    spawnNewFigure(&game_state.next);
+    const FigureTypeProperties* next_fig = &figures[game_state.next.figure_type];
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            game_state.info.next[y][x] = next_fig->blocks[y][x];
+        }
+    }
+}
+
+void updateFigure(){
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            game_state.current_fig[y][x] = game_state.info.next[y][x];
+        }
+    }
+    game_state.current.x = game_state.next.x;
+    game_state.current.y = game_state.next.y;
+    game_state.current.figure_type = game_state.next.figure_type;
 }
